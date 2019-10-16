@@ -1,0 +1,64 @@
+{
+  "name": "cube-vue-map",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "core-js": "^2.6.5",
+    "vue": "^2.6.10",
+    "vue-router": "^3.0.3",
+    "vuex": "^3.0.1",
+    "axios": "^0.18.0",
+    "dayjs": "^1.7.7",
+    "element-ui": "^2.12.0",
+    "normalize.css": "7.0.0",
+    "screenfull": "4.2.0",
+    "store": "^2.0.12",
+    "vue-awesome-swiper": "^3.1.3",
+    "vue-context-menu": "^2.0.6",
+    "vue-count-to": "1.0.13",
+    "vue-i18n": "^7.8.0",
+    "vue-particles": "^1.0.9",
+    "vue-virtual-scroller": "^1.0.0-rc.2",
+    "vuedraggable": "^2.16.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.12.0",
+    "@vue/cli-plugin-eslint": "^3.12.0",
+    "@vue/cli-service": "^3.12.0",
+    "@vue/eslint-config-standard": "^4.0.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "vue-template-compiler": "^2.6.10",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^7.1.0"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "@vue/standard"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
+}
