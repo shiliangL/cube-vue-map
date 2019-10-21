@@ -93,45 +93,76 @@ export default {
     initMap () {
       // eslint-disable-next-line no-undef
       this.map = new AMap.Map('container', {
-        zoom: 12, // 级别
-        // 中心点坐标
         center: [114.12744, 22.64469],
-        // pitch: 70,
+        zoom: 11,
+        pitch: 50,
         // 使用3D视图
         viewMode: '3D'
       })
 
-      this.drawAreaLine()
+      // this.drawAreaLine()
 
       // 加载天气查询插件
       // eslint-disable-next-line no-undef
-      AMap.plugin(['AMap.Weather'], function () {
+      AMap.plugin(['AMap.Weather', 'AMap.DistrictSearch'], () => {
         // 创建天气查询实例
         // eslint-disable-next-line no-undef
-        var weather = new AMap.Weather()
+        const weather = new AMap.Weather()
         // 执行实时天气信息查询
-        weather.getLive('深圳市', function (err, data) {
+        weather.getLive('深圳市', (err, data) => {
           console.log(err, data)
         })
-      })
 
-      // eslint-disable-next-line no-undef
-      const disProvince = new AMap.DistrictLayer.Province({
-        zIndex: 12,
-        adcode: ['440000'],
-        depth: 2,
-        styles: {
-          'fill': function (properties) {
-            const adcode = properties.adcode
-            // eslint-disable-next-line no-undef
-            return getColorByAdcode(adcode)
-          },
-          'province-stroke': 'cornflowerblue',
-          'city-stroke': 'white', // 中国地级市边界
-          'county-stroke': 'rgba(255,255,255,0.5)'// 中国区县边界
-        }
+        // 设置光照
+        // eslint-disable-next-line no-undef
+        this.map.AmbientLight = new AMap.Lights.AmbientLight([1, 1, 1], 0.5)
+        // eslint-disable-next-line no-undef
+        this.map.DirectionLight = new AMap.Lights.DirectionLight([0, 0, 1], [1, 1, 1], 1)
+
+        // eslint-disable-next-line no-undef
+        const object3Dlayer = new AMap.Object3DLayer()
+        this.map.add(object3Dlayer)
+
+        // eslint-disable-next-line no-undef
+        this.DistrictSearch = new AMap.DistrictSearch({
+          subdistrict: 0, // 返回下一级行政区
+          extensions: 'all', // 返回行政区边界坐标组等具体信息
+          level: 'city' // 查询行政级别为 市
+        }).search('深圳市', (status, result) => {
+          const bounds = result.districtList[0].boundaries
+          const height = 5000
+          const color = '#0088ffcc' // rgba
+          // eslint-disable-next-line no-undef
+          const prism = new AMap.Object3D.Prism({
+            path: bounds,
+            height: height,
+            color: color
+          })
+
+          prism.transparent = true
+          object3Dlayer.add(prism)
+
+          // eslint-disable-next-line no-undef
+          const text = new AMap.Text({
+            text: result.districtList[0].name + '</br>(' + result.districtList[0].adcode + ')',
+            verticalAlign: 'bottom',
+            position: [116.528261, 39.934313],
+            height: 5000,
+            style: {
+              'background-color': 'transparent',
+              '-webkit-text-stroke': 'red',
+              '-webkit-text-stroke-width': '0.5px',
+              'text-align': 'center',
+              'border': 'none',
+              'color': 'white',
+              'font-size': '24px',
+              'font-weight': 600
+            }
+          })
+
+          text.setMap(this.map)
+        })
       })
-      console.log(disProvince)
     },
     drawAreaLine () {
       const lineDate = []
